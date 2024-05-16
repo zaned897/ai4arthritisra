@@ -1,1 +1,6 @@
+# Environment variables
 .env
+
+# Documents
+docs/**
+
