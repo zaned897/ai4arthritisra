@@ -1,0 +1,21 @@
+    Urkan, E., Guler, H., & Komekci, F. (2016). A review of electrostatic spraying for agricultural applications. Tarım Makinaları Bilimi Dergisi, 12(4), 229-233.
+
+    Zhang, C., & Kovacs, J. M. (2012). The application of small unmanned aerial systems for precision agriculture: A review. Precision Agriculture, 13, 693-712.
+
+    Shukla, B. K., Maurya, N., & Sharma, M. (2023). Advancements in sensor-based technologies for precision agriculture: An exploration of interoperability, analytics, and deployment strategies. Engineering Proceedings, 58(1), 22.
+
+    Mogili, U. M. R., & Deepak, B. B. V. L. (2018). Review on application of drone systems in precision agriculture. Procedia Computer Science, 133, 502-509.
+
+    Ghafar, A. S. A., Hajjaj, S. S. H., Gsangaya, K. R., Sultan, M. T. H., Mail, M. F., & Hua, L. S. (2023). Design and development of a robot for spraying fertilizers and pesticides for agriculture. Materials Today: Proceedings, 81, 242-248.
+
+    Katupitiya, J., & Eaton, R. (2008). Precision autonomous guidance of agricultural vehicles for future autonomous farming. In American Society of Agricultural and Biological Engineers Annual International Meeting 2008 (pp. 1). American Society of Agricultural and Biological Engineers.
+
+    Fasiolo, D. T., Scalera, L., Maset, E., & Gasparetto, A. (2023). Towards autonomous mapping in agriculture: A review of supportive technologies for ground robotics. Robotics and Autonomous Systems, 104514.
+
+    Chakraborty, S., Elangovan, D., Govindarajan, P. L., ELnaggar, M. F., Alrashed, M. M., & Kamel, S. (2022). A comprehensive review of path planning for agricultural ground robots. Sustainability, 14(15), 9156.
+
+    Gui, X., Shang, B., & Yu, Y. (2023). Applications of electrostatic spray technology in food preservation. LWT, 115568.
+
+    Sammons, P. J., Furukawa, T., & Bulgin, A. (2005). Autonomous pesticide spraying robot for use in a greenhouse. In Australian Conference on Robotics and Automation (pp. 1-9). Commonwealth Scientific and Industrial Research Organisation Canberra, Australia.
+
+    Kant, J. K., Sripaad, M., Bharadwaj, A., Rajashekhar, V. S., & Sundaram, S. (2023). An autonomous hybrid drone-rover vehicle for weed removal and spraying applications in agriculture. In 2023 IEEE International Conference on Agrosystem Engineering, Technology & Applications (AGRETA) (pp. 92-97). IEEE.
