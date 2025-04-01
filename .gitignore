@@ -9,6 +9,8 @@ __pycache__/
 # Raw documents and data
 data/**
 docs/**
+!docs/doc_images/
+!docs/doc_images/**
 
 # Distribution / packaging
 .Python
