@@ -11,6 +11,60 @@ La artritis reumatoide (AR) es una enfermedad crónica caracterizada por la infl
 2. Implementar técnicas de reconstrucción de imágenes para mejorar la visualización y análisis de articulaciones afectadas por AR.
 3. Evaluar la efectividad de estos modelos en datos de imágenes médicas de alta resolución.
 
+## Estado Actual del Proyecto
+
+Actualmente se encuentra en desarrollo un **sistema local (demo - prototipo)** de bajo nivel para la creación de imágenes fotoacústicas. Este sistema se compone de tres módulos principales:
+
+1. **Generación de fuente (driver de corriente):** Encargado de emitir pulsos de alta corriente y corta duración sobre un diodo láser.
+2. **Adquisición de señales:** Basado en sensores ultrasónicos para captar las ondas generadas por el efecto fotoacústico.
+3. **Procesamiento y reconstrucción de datos:** Aún en fases posteriores del desarrollo.
+
+---
+
+## Desarrollo Actual: Driver de Corriente para Diodo Láser
+
+El presente avance se enfoca en el diseño y prueba de un **driver láser simple** basado en el siguiente circuito:
+
+![Driver Circuito](doc/doc_images/simple_driver_diagram.png)
+
+Este circuito permite la generación de pulsos de corriente de alta intensidad (hasta 60 A), con anchos de pulso inferiores a 10 ns, y tasas de repetición mayores a 500 kHz.
+
+### Descripción del Funcionamiento
+
+- El capacitor **C** se carga a un alto voltaje **HV** a través del resistor **R_C** y el diodo **D1**.
+- Una señal externa **TTL** activa el transistor MOSFET **Q1**, descargando **C** directamente sobre el diodo láser **LD**.
+- **R_CL** limita la corriente máxima sobre el láser.
+- **R_M** permite monitorear la corriente mediante caída de voltaje.
+- La duración del pulso se ajusta modificando el valor de **C**.
+- El diseño está inspirado en sistemas para aplicaciones de radar láser, optimizado para pulsos ultra rápidos y corrientes elevadas.
+
+### Componentes Usados (Valores Típicos)
+
+| Componente | Descripción                             | Valor Típico       |
+|------------|-----------------------------------------|--------------------|
+| **Q1**     | MOSFET de potencia (DE275-501N16A)      | 500 V / 50 A       |
+| **C**      | Capacitor de descarga                   | ~400 pF            |
+| **R_C**    | Resistor de carga del capacitor         | ~3.4 kΩ            |
+| **R_CL**   | Resistor limitador de corriente         | ~1 Ω               |
+| **R_M**    | Resistor de monitoreo                   | ~0.1 Ω             |
+| **D1**     | Diodo rápido para proteger el circuito  | Tipo Schottky      |
+| **LD**     | Diodo láser                             | Según aplicación   |
+
+---
+
+## Simulación del Driver
+
+A continuación se muestra una simulación básica del funcionamiento del circuito:
+
+![Simulación del Driver](doc/doc_images/simple_simultion.gif)
+
+Esta simulación confirma la descarga rápida del capacitor sobre la carga (LD) y el control de la forma del pulso mediante el valor del capacitor y el MOSFET.
+
+---
+
+Este driver constituye el primer paso hacia la generación controlada de señales fotoacústicas, necesarias para la fase de adquisición y reconstrucción de imágenes médicas.
+
+
 ## Revisión de Literatura
 
 ### Contexto de la Problemática y Retos
