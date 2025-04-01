@@ -25,7 +25,7 @@ Actualmente se encuentra en desarrollo un **sistema local (demo - prototipo)** d
 
 El presente avance se enfoca en el diseño y prueba de un **driver láser simple** basado en el siguiente circuito:
 
-![Driver Circuito](doc/doc_images/simple_driver_diagram.png)
+![Driver Circuito](docs/doc_images/simple_driver_diagram.png)
 
 Este circuito permite la generación de pulsos de corriente de alta intensidad (hasta 60 A), con anchos de pulso inferiores a 10 ns, y tasas de repetición mayores a 500 kHz.
 
@@ -56,7 +56,7 @@ Este circuito permite la generación de pulsos de corriente de alta intensidad (
 
 A continuación se muestra una simulación básica del funcionamiento del circuito:
 
-![Simulación del Driver](doc/doc_images/simple_simultion.gif)
+![Simulación del Driver](docs/doc_images/simple_simultion.gif)
 
 Esta simulación confirma la descarga rápida del capacitor sobre la carga (LD) y el control de la forma del pulso mediante el valor del capacitor y el MOSFET.
 
