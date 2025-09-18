@@ -25,7 +25,6 @@ sym-lib-table-bak
 *.csv
 *.net
 *.dcm
-*.zip
 
 # Fabricación (Gerbers, drills, posiciones, etc.)
 # TODO: remove this general ignore file
