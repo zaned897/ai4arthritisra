@@ -3,6 +3,64 @@ __pycache__/
 *.py[cod]
 *$py.class
 
+#  Kikad files (experimentation for only one production version)
+
+# Archivos de respaldo
+*.bak
+*.tmp
+*.kicad_pcb-bak
+*.kicad_prl
+
+# TODO: remove this general ignore file
+*.kicad*
+
+# Cachés y librerías generadas
+*-cache.lib
+*-rescue.lib
+fp-info-cache
+sym-lib-table-bak
+
+# Archivos de salida y exportación
+*.xml
+*.csv
+*.net
+*.dcm
+*.zip
+
+# Fabricación (Gerbers, drills, posiciones, etc.)
+# TODO: remove this general ignore file
+*.gbr*
+*.drl
+*.pos
+*.map
+*.cmp
+
+# Simulación
+*.raw
+*.log
+
+# Archivos temporales de 3D o STEP
+*.step
+*.stp
+*.wrl
+
+# Altium Designer temporary and backup files
+*.PrjPcb.~*
+*.SchDoc.~*
+*.PcbDoc.~*
+*.SchLib.~*
+*.PcbLib.~*
+
+# Altium History folder
+History/
+
+# Output folders (optional, but recommended)
+Project Outputs for */
+
+# Playground code or sandbox
+**playg**
+**sandbox**
+
 # C extensions
 *.so
 

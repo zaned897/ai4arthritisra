@@ -1,68 +1,81 @@
 # Protocolo de Investigación para Doctorado
 
 ## Título Propuesto
-"Reconstrucción y Análisis de Imágenes de Artritis Reumatoide mediante Deep Learning"
+
+**"Reconstrucción y Análisis de Imágenes de Artritis Reumatoide mediante Deep Learning"**
+
+---
 
 ## Introducción
+
 La artritis reumatoide (AR) es una enfermedad crónica caracterizada por la inflamación de las articulaciones, lo que lleva a daños óseos y deformidades. La identificación temprana y precisa de AR es crucial para el tratamiento y manejo de la enfermedad. Este estudio propone el uso de técnicas de deep learning y procesamiento de imágenes para mejorar la detección y clasificación de AR.
 
-## Objetivos
-1. Desarrollar modelos de deep learning para la segmentación, detección de puntos clave y conteo de características en imágenes de AR.
-2. Implementar técnicas de reconstrucción de imágenes para mejorar la visualización y análisis de articulaciones afectadas por AR.
-3. Evaluar la efectividad de estos modelos en datos de imágenes médicas de alta resolución.
+---
+****
+- Desarrollar modelos de deep learning para la segmentación, detección de puntos clave y conteo de características en imágenes de AR.  
+- Implementar técnicas de reconstrucción de imágenes para mejorar la visualización y análisis de articulaciones afectadas por AR.  
+- Evaluar la efectividad de estos modelos en datos de imágenes médicas de alta resolución.  
+
+---
 
 ## Estado Actual del Proyecto
 
-Actualmente se encuentra en desarrollo un **sistema local (demo - prototipo)** de bajo nivel para la creación de imágenes fotoacústicas. Este sistema se compone de tres módulos principales:
+Actualmente se encuentra en desarrollo un sistema local (**demo - prototipo**) de bajo nivel para la creación de imágenes fotoacústicas. Este sistema se compone de tres módulos principales:
 
-1. **Generación de fuente (driver de corriente):** Encargado de emitir pulsos de alta corriente y corta duración sobre un diodo láser.
-2. **Adquisición de señales:** Basado en sensores ultrasónicos para captar las ondas generadas por el efecto fotoacústico.
-3. **Procesamiento y reconstrucción de datos:** Aún en fases posteriores del desarrollo.
+1. **Generación de fuente (driver de corriente):** Encargado de emitir pulsos de alta corriente y corta duración sobre un diodo láser. *(Módulo en desarrollo activo)*.  
+2. **Adquisición de señales:** Basado en sensores ultrasónicos para captar las ondas generadas por el efecto fotoacústico.  
+3. **Procesamiento y reconstrucción de datos:** Aún en fases posteriores del desarrollo.  
 
----
-
-## Desarrollo Actual: Driver de Corriente para Diodo Láser
-
-El presente avance se enfoca en el diseño y prueba de un **driver láser simple** basado en el siguiente circuito:
-
-![Driver Circuito](docs/doc_images/simple_driver_diagram.png)
-
-Este circuito permite la generación de pulsos de corriente de alta intensidad (hasta 60 A), con anchos de pulso inferiores a 10 ns, y tasas de repetición mayores a 500 kHz.
-
-### Descripción del Funcionamiento
-
-- El capacitor **C** se carga a un alto voltaje **HV** a través del resistor **R_C** y el diodo **D1**.
-- Una señal externa **TTL** activa el transistor MOSFET **Q1**, descargando **C** directamente sobre el diodo láser **LD**.
-- **R_CL** limita la corriente máxima sobre el láser.
-- **R_M** permite monitorear la corriente mediante caída de voltaje.
-- La duración del pulso se ajusta modificando el valor de **C**.
-- El diseño está inspirado en sistemas para aplicaciones de radar láser, optimizado para pulsos ultra rápidos y corrientes elevadas.
-
-### Componentes Usados (Valores Típicos)
-
-| Componente | Descripción                             | Valor Típico       |
-|------------|-----------------------------------------|--------------------|
-| **Q1**     | MOSFET de potencia (DE275-501N16A)      | 500 V / 50 A       |
-| **C**      | Capacitor de descarga                   | ~400 pF            |
-| **R_C**    | Resistor de carga del capacitor         | ~3.4 kΩ            |
-| **R_CL**   | Resistor limitador de corriente         | ~1 Ω               |
-| **R_M**    | Resistor de monitoreo                   | ~0.1 Ω             |
-| **D1**     | Diodo rápido para proteger el circuito  | Tipo Schottky      |
-| **LD**     | Diodo láser                             | Según aplicación   |
+![Circuito Panelizado v4](circuits\lumat_avalanche_driver_v3\production_v4\panelization\panelization_production_v4\panelization_production_v4.png)
 
 ---
 
-## Simulación del Driver
+## Desarrollo del Driver de Corriente para Diodo Láser
 
-A continuación se muestra una simulación básica del funcionamiento del circuito:
+El enfoque actual es el diseño y la fabricación de un driver de potencia para un diodo láser, capaz de generar pulsos de corriente de alta intensidad y corta duración. El diseño ha pasado por varias iteraciones para mejorar su rendimiento, fiabilidad y funcionalidad.
 
-![Simulación del Driver](docs/doc_images/simple_simultion.gif)
+### Evolución del Diseño
 
-Esta simulación confirma la descarga rápida del capacitor sobre la carga (LD) y el control de la forma del pulso mediante el valor del capacitor y el MOSFET.
+A continuación, se describe la progresión de las versiones del driver:
+
+- **Versión 1 (simple_current_driver_v1):**  
+  Fase conceptual y de simulación utilizando el software LiveWire. Se exploraron dos topologías: un circuito RC simple y una configuración basada en un transistor en modo avalancha. Esta última fue seleccionada como base para el desarrollo del hardware por su capacidad para generar pulsos ultrarrápidos.  
+
+- **Versión 2 (reference_avalanche_driver_v2):**  
+  Primer prototipo físico del driver en modo avalancha. Se generaron los archivos de producción (Gerbers), pero durante las pruebas se detectó un punto de fallo crítico: la resistencia de potencia se sobrecalentaba y terminaba quemándose, lo que indicaba la necesidad de un rediseño para mejorar la gestión térmica y de potencia.  
+
+- **Versión 3 (simple_modified_v3):**  
+  Primera revisión mayor del diseño. Se solucionó el problema de sobrecalentamiento sustituyendo el componente anterior por una resistencia de potencia de 10W. Además, se integró un microcontrolador Raspberry Pi Pico (RP2040) para funcionar como un generador de señal de disparo (**trigger**) preciso y programable.  
+
+- **Versión 4 (production_v4):**  
+  Versión actual y primera candidata para producción. Sobre la base de la v3, se han añadido características para mejorar su usabilidad y robustez. Las mejoras incluyen:
+  - Integración de un display I2C para visualizar parámetros en tiempo real.  
+  - Implementación de control de frecuencia para ajustar la tasa de repetición de los pulsos.  
+  - Revisión completa de las reglas de diseño (**DRC**) para asegurar la fiabilidad en la fabricación.  
+  - Panelización del diseño para la producción de múltiples unidades de forma eficiente.  
 
 ---
 
-Este driver constituye el primer paso hacia la generación controlada de señales fotoacústicas, necesarias para la fase de adquisición y reconstrucción de imágenes médicas.
+## Estructura del Repositorio de Diseño Electrónico
+
+El proyecto `lumat_avalanche_driver_v3` contiene toda la historia del desarrollo electrónico.
+
+    lumat_avalanche_driver_v3/
+    │
+    ├── libs/                  # Librerías de KiCad (símbolos, huellas) para componentes personalizados (RP2040, Resistencia 10W, etc.).
+    │
+    ├── production_v4/         # Versión 4, lista para fabricación.
+    │   └── avalanche_lumat/   # Archivos de proyecto de KiCad (esquemático, PCB, Gerbers).
+    │
+    ├── simple_modified_v3/    # Versión 3, con RP2040 y resistencia de 10W.
+    │
+    ├── reference_avalanche_driver_v2/ # Versión 2, prototipo inicial con fallo.
+    │
+    └── simple_current_driver_v1/ # Versión 1, archivos de simulación en LiveWire.
+
+---
+
+## Resultados Obtenidos
 
 
 ## Revisión de Literatura
