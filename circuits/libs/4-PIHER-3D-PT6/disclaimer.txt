@@ -1,0 +1,25 @@
+Piher is pleased to provide users of our products the ability to download 3D Step models for their use in specifying our products.
+
+If you experience difficulty locating the drawing you require, or would simply like further information, contact Piher Marketing Department at  antonio.beasain@piher-amphenol.com 
+We’ll be happy to assist you.
+
+Piher does not guarantee that these models are accurate in all details and dimensions. Piher refuses all responsibility for errors caused at the customer side.
+
+The product information in this catalogue is for reference purposes. Please consult for the most up to date and accurate design information. This 3D model image is provided “as is” and any use of this 3D model image is at your own risk. 3D models might not be to scale or might not be the latest productiont version. If there is any discrepancy between the 3D model and the 2D dimensions shown on the technical drawing, the 2D drawing shall prevail.
+
+Piher Sensors & Controls S.A., its affiliates, agents, and employees, and all persons acting on its or their behalf (collectively, “Piher”), disclaim any and all liability for any errors, inaccuracies or incompleteness contained herein or in any other disclosure relating to any product described herein.   In case of discrepancies between the dimensions of the 3D model and the blueprint, the dimensions shown on the blueprint will take precedence.
+
+Piher disclaims any and all liability arising out of the use or application of any product described herein or of any information provided herein to the maximum extent permitted by law. The product specifications do not expand or otherwise modify Piher’s terms and conditions of sale, including but not limited to the warranty expressed therein, which apply to these products.  
+
+No licence, express or implied, by estoppel or otherwise, to any intellectual property rights is granted by this document or by any conduct of Piher.  
+
+The products shown herein are not designed for use in medical, life-saving, or life-sustaining applications unless otherwise expressly indicated.  Customers using or selling Piher products not expressly indicated for use in such applications do so entirely at their own risk and agree to fully indemnify Piher for any damages arising or resulting from such use or sale.  Please contact authorised Piher personnel to obtain written terms and conditions regarding products designed for such applications.  
+
+Product names and markings noted herein may be trademarks of their respective owners.
+
+Information contained in and/or attached to this catalogue may be subject to export control regulations of the European Community, USA, or other countries. Each recipient of this document is responsible to ensure that usage and/or transfer of any information contained in this document complies with all relevant export control regulations. If you are in any doubt about the export control restrictions that apply to this information, please contact the sender immediately. For any Piher International Corp. Exports, Note: All products / technologies are EAR99 Classified commodities. Exports from the United States are in accordance with the Export Administration Regulations. Diversion contrary to US law  is prohibited.
+
+All Piher products can be adapted to meet customer´s requirements.
+Due to continuous process improvement, specifications are subject to change without notice.
+Please always use the datasheets published at our website www.piher.net for the most up-to-date information.
+
