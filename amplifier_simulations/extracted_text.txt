@@ -1,0 +1,355 @@
+Prototipo Libre y Compacto para el Registro Continuo de la Actividad 
+Eléctrica del Corazón 
+ 
+Ing. Eduardo Santos Mena1, Ing. Jorge Pablo Vega Borrego2,  
+Dr. Arturo Moreno Báez3 y Dr. Carlos Alberto Olvera Olvera4   
+ 
+Resumen— Este documento presenta un dispositivo en etapa de prototipo que registra la actividad eléctrica cardíaca de 
+modo continuo y por largos periodos de tiempo (días y hasta semanas ), almacena los datos en un archiv o, y se auxilia de 
+una interfaz gráfica para la transmisión de éstos vía correo electrónico. El diseño se basa en la reducción de espacio, código 
+abierto y materiales de bajo costo, la señal se capta en la epidermis con una configuración de posicionamiento de electrodos 
+simple para después ser amplificada y filtrada analógicamente. Se realizaron las pruebas en un sujeto a lo largo de 48 horas 
+obteniendo un registro completo y coherente con datos comparados  con una base de datos apoyada por el NIBIB y el 
+NIGMS. 
+Palabras clave— AVR, Arduino, Código abierto, Electrocardiografía, Python, V1, V6. 
+Introducción 
+Las enfermedades del corazón están altamente relacionadas con la obesidad y el sobrepeso  en 2014, el 39% de 
+las personas adultas de 18 o más años tenían sobrepeso, y el 13% eran obesas, en ese mismo año 41 millones de 
+niños menores de cinco años tenían sobrepeso o eran obesos (OMS 2016). El presente trabajo pretende hacer una 
+contribución para realizar diagnósticos a tiempo, obtener mayor información sobre la condición del sujeto, facilitar 
+el tratamiento de personas de bajos recursos y apoyar a los investigadores con mejores herramientas. Este se enfoca 
+en obtener buenos resultados en cuestión de fidelidad de datos pero al mismo tiempo reduciendo los costo s, 
+mejorando la capacidad de uso y permitiendo a la comunidad científica y de desarrolladores manipular el código.  
+La señal que es generada por procesos quimico-eléctricos  en el corazón es recogida por tres electrodos en la 
+epidermis sobre regiones específicas, siendo del orden de milésimas de Volt, la forma de la onda eléctrica tiene un 
+comportamiento especifico y puede verse diferente dependiendo los lugares de las mediciones (estado 
+estandarizados estos) ofreciendo información relacionada con el comportamiento del corazón desde distintos 
+ángulos y por consiguiente se pueden detectar anomalías que surgen derivadas de patologí as cardíacas. En México 
+mueren muchas personas por infartos al año, además los antecedentes familiares de infartos se asocian direc tamente 
+con las personas según Cerecero P. (2009), mismos que se pudieran prevenir si se detectaran anomalías a tiempo. En 
+el mercado se encuentran habitualmente electrocardiógrafos digitales cada vez más portátiles y de menor costo 
+(Almeida et al. 2007) aunque generalmente son sistemas en los que no se permite la modificación de códigos 
+restringiéndose de alguna forma su uso y en la mayoría de los casos realizar monitoreo por largos periodos de 
+tiempo como lo hace  el monitor Holter resulta muy incómodo.  
+Metodología 
+El presente documento expone cómo a partir de la señal eléctrica recogida por electrodos en la piel del paciente, 
+se puede obtener una descripción del comportamiento del corazón del mismo modo que lo hace un 
+electrocardiógrafo comercial, el prototipo propuesto es capaz de registrar los datos de una sola derivación a la vez, 
+aunque el costo- espació de este ofrece la posibilidad de  colocar simultáneamente más electrodos y sensar las 
+diferentes derivaciones deseadas. La figura 1 muestra una descripción general del procedimiento realzado.  
+1 El Ing. Eduardo Santos Mena 3dmena@gmail.com .Es Ingeniero en C. y E. especializado en ingeniería de control y es estudiante 
+de maestría en la Unidad Académica de Ingeniería Eléctrica UAZ. 
+2 El Ing. Jorge Pablo Vega Borrego mailto:jpablo_vega@hotmail.com.Es Ingeniero en C. y E. especializado en ingeniería de control 
+y es estudiante de maestría en la Unidad Académica de Ingeniería Eléctrica UAZ. 
+3 El Dr. Arturo Moreno Báez mailto:morenob20@hotmail.com  Docente investigador de facultad de Ingeniería Eléctrica, miembro 
+del grupo de PDV e investigación aplicada del área de posgrados de Ciencias de la Ingeniería UAZ. 
+4 El Dr. Carlos Alberto Olvera Olvera mailto:colvera@uaz.edu.mx Docente investigador,  responsable del programa de Maestría en 
+Ciencias de la Ingeniería, miembro del grupo de Investigación Aplicada UAZ . 
+  
+Los autores desean agradecer al Dr. Juan Manuel Cortés Ramírez por el apoyo otorgado en consultorías a lo largo del 
+desarrollo del presente trabajo 
+Amlificador de 
+instrumentación 
+ Filtrado analógico
+Adquisición de 
+datos y conversion 
+A/D
+Almacenamiento 
+de datos
+visualización en 
+tiempo real y 
+tranzmision via e-
+mail
+comunicación serial 
+de datos (si está 
+disponible)
+Memorias del Congreso Internacional de 
+Investigación Academia Journals Celaya 2016
+© Academia Journals 2016
+Celaya, Guanajuato, México 
+Noviembre 9, 10, y 11, 2016
+Elibro Online con ISSN 
+1946-5351, Volumen 8, No. 5, 2016
+5704
+Figura 1. Metodología propuesta.  
+Amplificador de instrumentación.  
+La parte medular del sistema se basa en amplificadores operacionales en configuración de amplificador de 
+instrumentación (AI) que presenta un alto factor de rechazo al modo común (CMRR), es decir; dadas dos señales de 
+entrada de igual voltaje, su salida debería ser cero idealmente, al no ser así la configuración de la figura 2 
+proporciona un CMRR muy grande lo que conlleva un mejor comportamiento del circuito, se usó el amplificador 
+operacional LM324 (aunque puede ser sustituido por cualquier OpAmp similar, se probaron los integrados LM358 y 
+TL084CN arrojando los mismos resultados) que contiene en su encapsulado cuatro amplificadores operacionales, 
+suficientes para realizar la configuración propuesta más un seguidor de voltaje para centrar la señal en un nivel de 
+offset . La naturaleza de la señal que es recogida por los electrodos es altamente ruidosa en comparación con la señal 
+que proviene del corazón que es del orden de milésimas de Volt. En instrumentos que son alimentados por la línea 
+eléctrica doméstica se presenta a su vez una componte parásita, esta propuesta es energizada con una pila de 3.7V 
+(aunque se puede sustituir por 3, 3.3 o 5V) lo que hace al sistema portable al mismo tiempo que se elimina el ruido 
+persistente de la línea eléctrica, reduciendo espacio, etapas de filtrado y se aumenta la calidad de la señal.  
+Figura 2. Amplificador de instrumentación y seguidor de voltaje 
+ 
+El valor de la resistencia 𝑅1 define la ganancia del AI, es decir; las veces que será amplificada la señal, debido a 
+que la amplitud de la onda eléctrica cardiaca es de aproximadamente una milésima de Volt de pico a pico, la 
+ganancia del sistema Δ (adimensional) es calculada por la ecuación 1 (Analog Devices 2011). 
+Δ =  49.4𝑥103
+𝑅1
++ 1 = 49.4𝑥103
+82Ω + 1 =  603.4390         (1) 
+Filtrado analógico. 
+      La señal que es recogida en ese punto presenta ruido no deseado en diversas frecuencias como lo ilustra la figura 
+3, el espectro de la señal sin tratamiento presenta alta amplitud debajo 0.5Hz y por encima de 100Hz (amplitudes no 
+deseadas dice Álvarez 2007), además si se usa una fuente de alimentación de corriente directa basada en la 
+conversión CA/CD se tendrá un pico frecuencial  60Hz por lo que se diseñaron dos filtros, uno pasa altas pasivo a -
+3dB en una frecuencia de corte de 0.482Hz y un filtro pasa bajas activo de segundo orden con una atenuación de -
+40dB en la frecuencia de corte de 102.78Hz y evitando cualquier sinusoide de 60Hz por la alimentación de pila. 
+ 
+Memorias del Congreso Internacional de 
+Investigación Academia Journals Celaya 2016
+© Academia Journals 2016
+Celaya, Guanajuato, México 
+Noviembre 9, 10, y 11, 2016
+Elibro Online con ISSN 
+1946-5351, Volumen 8, No. 5, 2016
+5705
+Figura 3. Señal sin filtrar  
+Es posible visualizar la configuración eléctrica del filtrado como la conexión en cascada de dos filtros, de ese 
+modo se tendrán dos frecuencias de corte (frecuencias sobre las cuales la señal comienza a ser atenuada (Samir 
+1999), una frecuencia de corte inferior que llamaremos  𝑓𝑐𝑃𝑎 y una superior  𝑓𝑐𝑃𝑏 Debido a los valores comerciales 
+de capacitancias y resistencias, las frecuencia de corte tienen un error para  𝑓𝑐𝑃𝑎 de 3.73% y para  𝑓𝑐𝑃𝑏 de 2.66%. El 
+filtro pasa altas está basado en la configuración simple de un circuito RC por lo que es un filtro d e primer orden y su 
+frecuencia de corte 𝑓𝑐𝑃𝑎 se rige por la ecuación 1, mientras que el pasa bajas es un filtro activo de segundo orden y 
+su frecuencia de corte 𝑓𝑐𝑃𝑏 se puede calcular por medio de la ecuación 2. En la figura 4 se muestra el circuito que 
+comprende toda la etapa de filtrado analógico y su respuesta en frecuencia.  
+𝑓𝑐𝑃𝑎 = 1
+2𝜋𝑅13𝐶4
+=  1
+2𝜋(3.3𝑥106Ω)(100𝑥10−9𝑓) = 0.482𝐻𝑧          (1) 
+𝑓𝑐𝑃𝑏 = 1
+2𝜋√𝑅11𝑅12𝐶3𝐶2
+= 1
+2𝜋√(5.1𝑥103Ω)(10𝑥103Ω)(100𝑥10−9𝑓)(470𝑥10−9𝑓)
+= 102.783         (2)  
+  
+ 
+Figura 4. (a) Circuito de filtrado, (b) respuesta en frecuencia en escala logarítmica.  
+ 
+Adquisición de datos y conversión A/D 
+Debido a la frecuencia de corte superior del filtro pasa altas asumimos que la frecuencia máxima de interés es 
+100Hz y definimos la tasa de muestreo 𝑓𝑠 en 200Hz que es según el teorema de Nyquist (Oppenheim 1983) 
+mínimamente dos veces la frecuencia máxima de la señal por lo que el periodo de muestreo será entonces como lo 
+dice la ecuación3, es decir; se toma una muestra de la señal de salida cada 5 milisegundos. 
+𝑡𝑠 = 1
+𝑓𝑠 = 1
+200𝐻𝑧 = 0.005 𝑠𝑒𝑔          (4) 
+ 
+El conversor analógico digital tiene una cremallera de 10 bits por lo que la resolución está dada en 1024 niveles 
+(210) y trabaja con un rango de voltaje de 0 a 5 Volts, por lo que cada nivel puede representar 4.9𝑚𝑉 por bit según 
+la ecuación 5. 
+𝑟𝑒𝑠𝑜𝑙𝑢𝑐𝑖ó𝑛 = 𝑣𝑜𝑙𝑡𝑎𝑗𝑒
+𝑏𝑖𝑡𝑠 𝑑𝑒 𝑐𝑟𝑒𝑚𝑎𝑙𝑙𝑒𝑟𝑎 =  5𝑉
+210 = 5𝑉
+1024𝑏 =  0.0049𝑉/𝑏           (5) 
+ 
+Es importante tener en cuenta entonces que la ganancia del AI debe asegurar que la onda amplificada supere 
+cierto rango para ser digitalizada fielmente y dependerá del voltaje y la longitud de la c remallera que el convertidor 
+especifique, con un convertidor A/D de 10 bits es necesario tener una ganancia Δ ≥ 10 y así tener como mínimo 10 
+puntos en la onda. A su vez se debe considerar que la señal debe ser puramente positiva  lo que genera una 
+componente de CD que puede ser eliminada de forma digital centrando la señal en cero Volts. Se usó la placa 
+Arduino Lilypad como conversor A/D y también para almacenamiento y comunicación serial de datos (los códigos 
+de programación se muestran en el apéndice). 
+ 
+Almacenamiento de datos 
+Los datos son guardados a una taza de 100 muestras por segundo, lo que es suficiente para recrear la onda y ser 
+visualizada como en un electrocardiógrafo convencional. Cada dato representa por lo tanto diez milisegundos de 
+registro que se almacena en una memoria micro SD en formato .txt separando cada valor con una coma y haciendo 
+Memorias del Congreso Internacional de 
+Investigación Academia Journals Celaya 2016
+© Academia Journals 2016
+Celaya, Guanajuato, México 
+Noviembre 9, 10, y 11, 2016
+Elibro Online con ISSN 
+1946-5351, Volumen 8, No. 5, 2016
+5706
+un salto de línea cada 6,000 valores por lo que cada linea corresponde a un minuto de grabación. La mayoría de los 
+paquetes de cálculo soportan este tipo de archivos lo que facilita el análisis estadístico y matemático de la señal, 
+además son capaces de almacenar cerca de 16,000 columnas por 1,000,000 filas  según sus especificaciones y 
+limites, lo que posibilita el manejo de datos de más de 1.9 años según la ecuación 6. Para el almacenamiento de 
+datos de la tarjeta Arduino a la memoria micro SD se usó un módulo SPI micro SD TF.  
+𝑡𝑖𝑒𝑚𝑝𝑜 𝑑𝑒 𝑟𝑒𝑔𝑖𝑠𝑡𝑟𝑜 = 1,000,000𝑚𝑖𝑛
+60𝑚𝑖𝑛 ∗ 24ℎ𝑟𝑠 ∗ 365𝑑𝑖𝑎𝑠 = 1.902 𝑎ñ𝑜𝑠         (6) 
+ 
+Comunicación serial de datos 
+El modo de comunicación serial se usa en caso de que se desee visualizar los datos en tiempo real (como lo hace 
+la interfaz gráfica) aunque este protocolo de comunicación siempre estará habilitado. Para su uso sólo basta con 
+escribir en el buffer cualquier valor (ej. “1”, “start”, etc.) a la velocidad de 57,600 bauds/segundo,  estándar de 
+comunicación al que el código de programación responde el valor de la señal digitalizada (0-1023) en dos bytes, 
+primero se envía la parte alta del CAD y después la parte baja, una forma de común de unir los valores de los dos 
+bytes es multiplicar el byte alto por 256 o 28 equivalente a hacer un corrimiento a la izquierda de ocho bits y sumar 
+el byte bajo. En la figura 5 se muestra como es el llenado del buffer de datos en la comunicación usada. 
+Figura 5. Manejo de transmisión de datos en comunicación serial. 
+ 
+Visualización en tiempo real y transmisión via e-mail 
+La visualización de datos en tiempo real  se lleva a cabo por medio de una interfaz gráfica de usuario creada en 
+lenguaje de programación Python basada en el módulo Tkinter, ésta escribe un valor en el bus de comunicación 
+serial cada 5 milisegundos a lo que recibe el valor digital registrado en la tarjeta en ese instante de tiempo. El envío 
+de información vía correo electrónico hace uso del módulo email.mime que trabaja bajo el protocolo de transferencia 
+simple de correo (SMTP) en el cual se deben definir las variables del correo electrónico del paciente (dirección y 
+contraseña) y las variables de correo (asunto, remitente, destinatario). Una variable global d e programación es la 
+encarga de registrar los valores recibidos y de igual forma los salva en el disco duro del PC bajo el mismo formato 
+que lo hace la etapa de almacenamiento de datos. En la figura 6 se muestra la interfaz creada y el figura 7 se 
+muestran todas las partes del sistema. 
+Figura 6. Interfaz gráfica de usuario para visualización de datos. 
+ 
+Memorias del Congreso Internacional de 
+Investigación Academia Journals Celaya 2016
+© Academia Journals 2016
+Celaya, Guanajuato, México 
+Noviembre 9, 10, y 11, 2016
+Elibro Online con ISSN 
+1946-5351, Volumen 8, No. 5, 2016
+5707
+Figura 7. Modo de conexión y dispositivos usados. 
+Resultados y Conclusiones 
+Resultados 
+Se compararon los resultados obtenidos con las bases de datos de la página Physionet.org que a su vez se apoya 
+por el  National Institute of General Medical Sciences (NIGMS) y el  National Institute of Biomedical Imaging and 
+Bioengineering (NIBIB), en las figuras 8-10 se muestra una comparativa entre la onda V1, V6 y AVR  obtenidas 
+con el prototipo propuesto y las ondas que ofrece la basa de datos The MGH/MF Waveform Database con doi: 
+10.13026/C26K5Q que son muestreadas a 750Hz (Goldberger AL. 2013). 
+Figura 8. En a) se muestra la onda del prototipo y en b) la onda de la base de datos para V1 
+ 
+ 
+Figura 9. a) onda V6 del prototipo, b) onda de la base de datos   
+ 
+Figura 9. a) onda AVR del prototipo, b) onda de la base de datos 
+ 
+ 
+0.8
+0.9
+1
+1.1
+1.2
+1.3
+1.4
+1.5
+0 0.2 0.4 0.6 0.8 1 1.2 1.4 1.6 1.8 2 2.2 2.4 2.6 2.8
+2.4
+2.5
+2.6
+2.7
+2.8
+0 0.4 0.8 1.2 1.6 2 2.4 2.8 3.2 3.6 4 4.4 4.8 5.2 5.6 6 6.4 6.8 7.2 7.6 8
+1.8
+1.9
+2
+2.1
+2.2
+0 0.2 0.4 0.6 0.8 1 1.2 1.4 1.6 1.8 2 2.2 2.4 2.6 2.8 3 3.2 3.4
+Memorias del Congreso Internacional de 
+Investigación Academia Journals Celaya 2016
+© Academia Journals 2016
+Celaya, Guanajuato, México 
+Noviembre 9, 10, y 11, 2016
+Elibro Online con ISSN 
+1946-5351, Volumen 8, No. 5, 2016
+5708
+ 
+Conclusiones 
+El diseño implementado presenta buena respuesta en cuestión al comportamiento d e la forma de onda, al 
+disponer de la información digitalizada se ofrece la oportunidad de implementar filtros digitales y desarrollo de 
+algoritmos de análisis para detección de patologías de modo automático. En la figura 10 se muestra registro en los 
+que el sujeto realizó actividad física y derivado a eso se perdieron datos durante un peqeño lapso de tiempo, por lo 
+que necesario mejorar la forma en que se colocan los electrodos y se fija el sistema.  
+ 
+APENDICE 
+/* 
+Eduardo Santos et al 
+MACII UAZ 2016 
+AcademicJournals celaya 2016 
+*/ 
+#include <SD.h> 
+#define ON 2 
+#define ADC1 A0 
+ 
+File file; 
+const int selectCs = 4; 
+unsigned long time_1 = 0; 
+unsigned long time_2 = 0; 
+int channel_1; 
+int fs = 200; 
+int ts = (1000/fs); 
+int count = 0; 
+ 
+void setup() 
+{ 
+  pinMode(ON,OUTPUT); 
+  digitalWrite(ON,HIGH); 
+  Serial.begin(56000); 
+  if (!SD.begin(selectCs)) 
+  { 
+    digitalWrite(ON,LOW); 
+    return; 
+  }  
+  file = SD.open("ECG.txt",FILE_WRITE); 
+} 
+ 
+void loop() 
+{ 
+  time_2 = millis(); 
+  if ((time_2-time_1)>ts) 
+  { 
+    digitalWrite(ON,HIGH); 
+    channel_1 = analogRead(ADC1); 
+    file.print(channel_1); 
+    file.print(","); 
+    if (count >= 6000) 
+    { 
+       file.println(""); 
+       file.close(); 
+       count = 0; 
+       file = SD.open("ECG.txt",FILE_WRITE); 
+    } 
+    if (Serial.available()) 
+    { 
+      Serial.read(); 
+      Serial.write(highByte(channel_1)); 
+      Serial.write(lowByte(channel_1)); 
+    } 
+    digitalWrite(ON,LOW); 
+    time_1 = time_2; 
+    count++; 
+  } 
+} 
+ 
+Referencias 
+Almeida R., Gonzáles R, Rodríguez E., Rodríguez G. “Sistema para monitoreo continuo de ECG: Cardioestudio”, IV Latin American Congress on 
+Biomedical Engineering, Bioengineering Solutions for Latin America Health, septiembre del 2007, Vol. 18 pp. 175-177 2007. 
+ 
+Álvarez, Leydy Laura, Ricardo Henao, and Edison Duque. "Análisis de esquemas de filtrado análogo para señales ECG." S cientia Et Technica 
+13.37 : 103-108 2007. 
+ 
+Analog devices , “Low Cost Low Power Instrumentation Amplifier AD620”, hoja de datos del fabricante, consultado por internet el 4 de septiembre 
+del 2016. Dirección de inter: http://www.analog.com/media/en/technical-documentation/data-sheets/AD620.pdf 
+ 
+Cerecero, Patricia, et al. "Estilos de vida asociados al riesgo cardiovascular global en trabajadores universitario s del Estado de México." salud 
+pública de méxico 51.6 (2009): 465-473. 
+ 
+Goldberger AL, Amaral LAN, Glass L, Hausdorff JM, Ivanov PCh, Mark RG, Mietus JE, Moody GB, Peng C -K, Stanley HE. PhysioBank, 
+PhysioToolkit, and PhysioNet: Components of a New Research  Resource for Complex Physiologic Signals. Circulation 101(23):e215 -e220. 
+Dirección de internet: http://circ.ahajournals.org/cgi/content/full/101/23/e215 Junio 2013. 
+ 
+Obesidad, O. M. S.” Sobrepeso. Nota descriptiva, (311), 2, consultado por internet el 2 d e septiembre del 2016. Dirección de internet: 
+http://www.who.int/mediacentre/factsheets/fs311/es/ 
+ 
+Oppenheim, Alan V., Alan S. Willsky, and Syed Hamid Nawab. Signals and systems. Vol. 2. Englewood Cliffs, NJ: Prentice-Hall, 1983. 
+ 
+Soliman, Samir, and Mandyam D. Srinath. Señales y sistemas: continuos y discretos. Pearson Educación, 1999. 
+100300500700
+0 10 20 30 40 50 60 70 80 90 100 110 120
+Memorias del Congreso Internacional de 
+Investigación Academia Journals Celaya 2016
+© Academia Journals 2016
+Celaya, Guanajuato, México 
+Noviembre 9, 10, y 11, 2016
+Elibro Online con ISSN 
+1946-5351, Volumen 8, No. 5, 2016
+5709

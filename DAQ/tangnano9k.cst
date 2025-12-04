@@ -1,0 +1,27 @@
+// Reloj Principal
+IO_LOC "clk" 52;
+IO_PORT "clk" PULL_MODE=UP;
+
+// Salida UART (Hacia la PC)
+IO_LOC "uart_tx" 17;
+IO_PORT "uart_tx" IO_TYPE=LVCMOS33 PULL_MODE=UP;
+
+// LED de prueba
+IO_LOC "led_test" 10;
+IO_PORT "led_test" DRIVE=8 IO_TYPE=LVCMOS18;
+
+// Interfaz ADC
+IO_LOC "adc_clk" 25;
+IO_PORT "adc_clk" IO_TYPE=LVCMOS33;
+
+IO_LOC "adc_data[3]" 26; // Conectar a D11 (MSB) del ADC
+IO_PORT "adc_data[3]" IO_TYPE=LVCMOS33;
+
+IO_LOC "adc_data[2]" 27; // Conectar a D10
+IO_PORT "adc_data[2]" IO_TYPE=LVCMOS33;
+
+IO_LOC "adc_data[1]" 28; // Conectar a D9
+IO_PORT "adc_data[1]" IO_TYPE=LVCMOS33;
+
+IO_LOC "adc_data[0]" 29; // Conectar a D8
+IO_PORT "adc_data[0]" IO_TYPE=LVCMOS33;
