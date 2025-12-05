@@ -1,0 +1,19 @@
+// Reloj (27MHz)
+IO_LOC  "sys_clk" 52;
+IO_PORT "sys_clk" PULL_MODE=UP;
+
+// Botón S1 (Reset/Trigger)
+IO_LOC  "sys_rst_n" 3;
+IO_PORT "sys_rst_n" PULL_MODE=UP;
+
+// Salida UART (Pin 17 va al USB interno de la Tang Nano 9K)
+IO_LOC  "uart_tx" 17;
+IO_PORT "uart_tx" IO_TYPE=LVCMOS33 PULL_MODE=UP;
+
+// LEDs (Opcional, para ver actividad)
+IO_LOC  "led[0]" 10;
+IO_LOC  "led[1]" 11;
+IO_LOC  "led[2]" 13;
+IO_LOC  "led[3]" 14;
+IO_LOC  "led[4]" 15;
+IO_LOC  "led[5]" 16;
