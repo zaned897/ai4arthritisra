@@ -1,71 +1,70 @@
-module top(
-    input  sys_clk,      // 27 MHz Clock
-    input  sys_rst_n,    // Botón Reset/Trigger (Activo bajo)
-    output uart_tx,      // Salida de datos al PC
-    output [5:0] led     // LEDs de estado
+module top (
+    input  wire sys_clk,      // 27 MHz Clock
+    input  wire sys_rst_n,    // Reset (Botón S1)
+    input  wire trigger_in,   // Señal de Trigger del Láser (5kHz)
+    input  wire [7:0] adc_data, // Datos reales del AD9226
+    output wire adc_clk,      // Reloj hacia ADC
+    output wire uart_tx,      // TX hacia PC
+    output wire led_busy      // LED indicador
 );
 
-    // --- PARÁMETROS DE CONFIGURACIÓN ---
-    parameter BURST_SIZE = 64; // Tamaño del buffer (0 a 63)
-    
-    // --- MÁQUINA DE ESTADOS (FSM) ---
-    localparam IDLE    = 0;
-    localparam CAPTURE = 1;
-    localparam SENDING = 2;
+    parameter BURST_SIZE = 1024;
 
-    // --- REGISTROS Y VARIABLES ---
+    assign adc_clk = ~sys_clk;
+
+    (* ram_style = "block" *)
+    reg [7:0] memory [0:BURST_SIZE-1];
+    reg [7:0] mem_read_data;
+    reg [10:0] ptr; 
+    reg ram_write_en;
+
+    always @(posedge sys_clk) begin
+        if (ram_write_en) begin
+            //memory[ptr] <= adc_data; // Enable this line to use real ADC data
+            memory[ptr] <= ptr[7:0];
+        end
+        mem_read_data <= memory[ptr]; 
+    end
+
+    localparam IDLE = 0, CAPTURE = 1, SENDING = 2;
     reg [1:0] state = IDLE;
-    
-    // RAM interna (Implementada con DFFs en este caso)
-    reg [7:0] memory [0:BURST_SIZE-1]; 
-    
-    // Puntero de 6 bits (Suficiente para contar de 0 a 63)
-    reg [5:0] ptr = 0;
-    
-    // Señales para control UART
+
+    reg trig_d1, trig_d2;
+    wire trigger_posedge = (trig_d1 && !trig_d2);
+
+    always @(posedge sys_clk) begin
+        trig_d1 <= trigger_in;
+        trig_d2 <= trig_d1;
+    end
+
+    // Lógica UART
     reg tx_start = 0;
-    reg [7:0] tx_data = 0;
+    reg [7:0] tx_byte_latch; // Buffer temporal para transmisión
     wire tx_busy;
+    assign led_busy = (state == IDLE);
 
-    // Asignación de LEDs (Visualización del estado actual)
-    assign led = ~state;
-
-    // --- INSTANCIA DEL MÓDULO UART_TX ---
-    uart_tx #(
-        .CLK_FREQ(27000000), 
-        .BAUD_RATE(115200)
-    ) uart_inst (
-        .clk(sys_clk),
-        .rst_n(sys_rst_n),
-        .tx_start(tx_start),
-        .tx_data(tx_data),
-        .tx_busy(tx_busy),
-        .uart_tx(uart_tx)
-    );
-
-    // --- LÓGICA SECUENCIAL PRINCIPAL (FSM) ---
     always @(posedge sys_clk or negedge sys_rst_n) begin
         if (!sys_rst_n) begin
-            // Reset asíncrono
             state <= IDLE;
             ptr <= 0;
             tx_start <= 0;
+            ram_write_en <= 0;
         end else begin
             case (state)
-            
                 IDLE: begin
-                    // Al soltar el reset (sys_rst_n=1), iniciamos el proceso.
                     ptr <= 0;
-                    state <= CAPTURE; 
+                    ram_write_en <= 0;
+                    if (trigger_posedge) state <= CAPTURE;
                 end
 
                 CAPTURE: begin
-                    // Generación del patrón de Diente de Sierra (0, 1, 2... 63)
-                    memory[ptr] <= ptr[7:0]; 
-
+                    // Activamos escritura
+                    ram_write_en <= 1; 
+                    
+                    // Control del puntero
                     if (ptr == BURST_SIZE - 1) begin
-                        // Al terminar de escribir el último dato (63)
                         ptr <= 0;
+                        ram_write_en <= 0; // Dejar de escribir al terminar
                         state <= SENDING;
                     end else begin
                         ptr <= ptr + 1;
@@ -73,34 +72,32 @@ module top(
                 end
 
                 SENDING: begin
+                    ram_write_en <= 0; // Asegurar que no escribimos
+                    
                     if (!tx_busy && !tx_start) begin
-                        // 1. Cargar el dato actual y enviar pulso de inicio
-                        tx_data <= memory[ptr];
-                        tx_start <= 1;
-                        
-                        // 2. AVANZAR el puntero al próximo dato (Look-ahead)
-                        if (ptr == BURST_SIZE - 1) begin
-                            ptr <= 0; // Se envió el dato 63, el próximo dato a leer es el 0
+                        if (ptr == BURST_SIZE) begin
+                            state <= IDLE;
                         end else begin
+                            // Leemos el dato que sale del bloque RAM
+                            tx_byte_latch <= mem_read_data; 
+                            tx_start <= 1;
                             ptr <= ptr + 1;
                         end
-                        
-                    end else if (tx_start) begin
-                        // 3. Desactivar el pulso de inicio
+                    end else begin
                         tx_start <= 0;
-
-                        // 4. Comprobar si se terminó la ráfaga (ptr se reinició a 0 en el paso anterior)
-                        if (ptr == 0) begin 
-                            state <= CAPTURE; // Bucle continuo: Volver a generar/enviar
-                        end
-
                     end
                 end
-                
-                // Opción por defecto (manejo de estados inválidos)
-                default: state <= IDLE;
-                
             endcase
         end
     end
+
+    uart_tx_module uart_inst (
+        .clk(sys_clk),
+        .rst_n(sys_rst_n),
+        .tx_start(tx_start),
+        .tx_data(tx_byte_latch),
+        .uart_tx(uart_tx),
+        .tx_busy(tx_busy)
+    );
+
 endmodule
