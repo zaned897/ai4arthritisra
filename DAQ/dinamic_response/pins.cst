@@ -1,0 +1,50 @@
+// --- SISTEMA ---
+// Reloj principal (27 MHz)
+IO_LOC "sys_clk" 52;
+IO_PORT "sys_clk" PULL_MODE=UP;
+
+// Reset (Botón S1)
+IO_LOC "sys_rst_n" 4;
+IO_PORT "sys_rst_n" PULL_MODE=UP;
+
+// Trigger (Botón S2 o Entrada Externa)
+// NOTA: El Pin 3 es el botón S2. Si usas un trigger externo, conecta ahí
+// pero asegúrate que sea nivel 3.3V (¡NO 5V!).
+IO_LOC "trigger_in" 3;
+IO_PORT "trigger_in" PULL_MODE=UP;
+
+// --- SALIDAS DE USUARIO ---
+// LED Indicador (Busy) - Pin 10
+IO_LOC "led_busy" 10;
+IO_PORT "led_busy" IO_TYPE=LVCMOS18;
+
+// UART TX (Hacia PC) - Pin 17
+IO_LOC "uart_tx" 17;
+IO_PORT "uart_tx" IO_TYPE=LVCMOS33;
+
+// --- INTERFAZ ADC (AD9226) ---
+// Reloj hacia el ADC
+IO_LOC "adc_clk" 25;
+IO_PORT "adc_clk" IO_TYPE=LVCMOS33 DRIVE=8;
+
+// Bus de Datos (8 Bits Superiores)
+// Conectamos los pines físicos 26-33 a los bits 7-0 del código
+// Física: ADC D11 (MSB) -> Tang Pin 26 -> Verilog adc_data[7]
+IO_LOC "adc_data[7]" 26;
+IO_LOC "adc_data[6]" 27;
+IO_LOC "adc_data[5]" 28;
+IO_LOC "adc_data[4]" 29;
+IO_LOC "adc_data[3]" 30;
+IO_LOC "adc_data[2]" 31;
+IO_LOC "adc_data[1]" 32;
+IO_LOC "adc_data[0]" 33; // ADC D4
+
+// Configuración eléctrica para el bus de datos
+IO_PORT "adc_data[7]" IO_TYPE=LVCMOS33 PULL_MODE=DOWN;
+IO_PORT "adc_data[6]" IO_TYPE=LVCMOS33 PULL_MODE=DOWN;
+IO_PORT "adc_data[5]" IO_TYPE=LVCMOS33 PULL_MODE=DOWN;
+IO_PORT "adc_data[4]" IO_TYPE=LVCMOS33 PULL_MODE=DOWN;
+IO_PORT "adc_data[3]" IO_TYPE=LVCMOS33 PULL_MODE=DOWN;
+IO_PORT "adc_data[2]" IO_TYPE=LVCMOS33 PULL_MODE=DOWN;
+IO_PORT "adc_data[1]" IO_TYPE=LVCMOS33 PULL_MODE=DOWN;
+IO_PORT "adc_data[0]" IO_TYPE=LVCMOS33 PULL_MODE=DOWN;
